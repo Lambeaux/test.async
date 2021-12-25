@@ -1,0 +1,2 @@
+{:main net.lambeaux.test.async.core
+ :target :nodejs}
