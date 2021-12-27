@@ -1,12 +1,15 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}
         org.clojure/clojurescript {:mvn/version "1.10.773"}
-        org.clojure/core.async {:mvn/version "1.3.618"}}
- :aliases {;; clj -M:dev -r
+        org.clojure/core.async {:mvn/version "1.3.618"}
+        com.bhauman/figwheel-main {:mvn/version "0.2.12"
+                                   :exclusions [org.clojure/clojurescript]}}
+ :aliases {;; ~
            :fig {:main-opts ["-m" "figwheel.main"]}
+           ;; ~
+           ;; clj -M:dev -r
            :dev {:extra-paths ["dev"]
-                 :extra-deps {com.bhauman/figwheel-main {:mvn/version "0.2.12"
-                                                         :exclusions [org.clojure/clojurescript]}}}
+                 :extra-deps {}}
            ;; ~
            :test {:extra-paths ["test" "test-resources"]
                   :extra-deps {}}}}

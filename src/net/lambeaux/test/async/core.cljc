@@ -1,25 +1,15 @@
 (ns net.lambeaux.test.async.core
-  (:require [net.lambeaux.test.async.impl :as impl]
-            #?(:clj [clojure.core.async :as async])
-            #?(:cljs [cljs.test :as test])
-            #?(:cljs [cljs.core.async :as async])))
+  (:require [clojure.core.async :as async :include-macros true]
+            [net.lambeaux.test.async.impl :as impl]))
 
 (defn cljs? [env] (boolean (:ns env)))
-
-(defmacro if-cljs
-  [then else]
-  (if (cljs? &env) then else))
 
 (defmacro go-test
   "Asynchronously execute the test body (in a go block)."
   [& body]
   (if (cljs? &env)
-    ;; CLJS
-    `(test/async done#
-       (impl/deep-take! done#
-         (async/go (do ~@body))))
-    ;; JVM
-    `(async/<!! (async/go (do ~@body)))))
+    `(impl/go-test-js ~body)
+    `(impl/go-test-jvm ~body)))
 
 (defmacro go-redefs
   "Async support for with-redefs where bindings persist for the runtime of the (go) block. Supports

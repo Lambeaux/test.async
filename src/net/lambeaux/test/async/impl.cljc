@@ -1,6 +1,6 @@
 (ns net.lambeaux.test.async.impl
-  (:require #?(:clj [clojure.core.async :as async])
-            #?(:cljs [cljs.core.async :as async])))
+  (:require [clojure.core.async :as async :include-macros true]
+            [clojure.test :as test]))
 
 (defmacro callback-redefs
   "Mutates state. Call (done) to reset to prior state."
@@ -32,3 +32,15 @@
     (async/take! x (partial deep-take! f) false)
     (f))
   x)
+
+(defmacro go-test-jvm
+  "Asynchronously execute the test body (in a go block)."
+  [body]
+  `(async/<!! (async/go (do ~@body))))
+
+(defmacro go-test-js
+  "Asynchronously execute the test body (in a go block)."
+  [body]
+  `(test/async done#
+     (deep-take! done#
+       (async/go (do ~@body)))))

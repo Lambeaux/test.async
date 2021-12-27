@@ -1,7 +1,9 @@
 (ns net.lambeaux.test.async.core-test
   (:require [net.lambeaux.test.async.core :refer [go-test go-redefs]]
-            #?(:clj  [clojure.test :refer [deftest is testing]]
-               :cljs [cljs.test :as test :refer [deftest is testing]])))
+            [clojure.test :refer [deftest is testing]]
+            ;; FIXME - Shouldn't need explicit core.async requirement.
+            ;; Should be getting pulled in transitively.
+            #?(:cljs [clojure.core.async])))
 
 (def test-stub (constantly 10))
 
